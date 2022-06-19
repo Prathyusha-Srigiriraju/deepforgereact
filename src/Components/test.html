@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div>
+
+    <button class="btn btn-default submit">Click</button>
+
+</div>
+
+<script>
+
+
+    $('.submit').click( function(){
+        var fname = $("#fname").val();
+        var lname = $("#lname").val();
+        var email = $("#email").val();
+        var mobile = $("#mnumber").val();
+        var companyName = $("#Company").val();
+        var message = $("#textarea").val()
+    
+        var dataString = { 
+        "subject": "ContactUs", 
+        "firstName": "test", 
+        "lastName": "test",
+        "email": "test@jashd.com", 
+        "mobileNumber": "836726347627347", 
+        "company": "test", 
+        "message": "test" }
+
+        $.ajax({
+            type: "POST",
+            url: "https://api.deepforgeai.com/public/deepforge",
+            data: dataString,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+              },
+              cors: true ,
+              contentType:'application/json',
+              secure: true,
+            success: function () {
+                $(".d-c-sec1 form").fadeOut();
+                $(".thank-you").fadeIn();
+                $(".alert").hide()
+                setTimeout(function () {
+                 $(".d-c-sec1 form").fadeIn();
+                 $(".thank-you").fadeOut();
+                 $("#contactform")[0].reset();
+                 $('.submit').prop("disabled", true);
+             }, 7000);
+            },
+            error: function (jqXHR, exception) {
+                if (jqXHR.status === 0) {
+                    alert('Please Verify Network.');
+                } else if (jqXHR.status == 404) {
+                    alert('Requested page not found. [404]');
+                } else if (jqXHR.status == 500) {
+                    alert('Internal Server Error [500].');
+                } else if (exception === 'parsererror') {
+                    alert('Requested JSON parse failed.');
+                } else if (exception === 'timeout') {
+                    alert('Time out error.');
+                } else if (exception === 'abort') {
+                    alert('Ajax request aborted.');
+                } else {
+                    alert('Uncaught Error.\n' + jqXHR.responseText);
+                }
+            }
+        });
+
+        return false;
+    
+    });  
+
+
+</script>
+
+
+
+</body>
+</html>
